@@ -157,4 +157,4 @@ If this skill is missing information or could be improved:
   1. Update this skill with improvements
   2. Create a PR to github.com/digitalsamba/claude-code-video-toolkit
 
-Just say "improve this skill" and I'll guide you through updating `.claude/skills/remotion/SKILL.md`.
+Just say "improve this skill" and I'll guide you through updating `.agents/skills/remotion/SKILL.md` (the canonical copy — `.claude/skills/` holds a generated stub).

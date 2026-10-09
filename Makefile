@@ -6,7 +6,7 @@ PIP = $(RUN_PYTHON) -m pip
 
 .DEFAULT_GOAL := setup
 
-.PHONY: setup install install-dev install-gpu test test-contracts lint clean preflight demo demo-list hyperframes-doctor hyperframes-warm venv ensure-venv
+.PHONY: setup install install-dev install-gpu test test-contracts lint clean preflight demo demo-list hyperframes-doctor hyperframes-warm venv ensure-venv skills-sync skills-check
 
 # ---- Virtual environment ----
 
@@ -119,11 +119,22 @@ demo: ensure-venv
 demo-list: ensure-venv
 	$(RUN_PYTHON) render_demo.py --list
 
-lint: ensure-venv
+lint: ensure-venv skills-check
 	$(RUN_PYTHON) -m py_compile tools/base_tool.py
 	$(RUN_PYTHON) -m py_compile tools/tool_registry.py
 	$(RUN_PYTHON) -m py_compile tools/cost_tracker.py
 	$(RUN_PYTHON) -m py_compile tools/analysis/composition_validator.py
+
+# ---- Agent skills ----
+# `.agents/skills/` is canonical; `.claude/skills/` holds generated pointer
+# stubs so Claude Code can auto-discover them. Edit the canonical skill, then
+# run skills-sync. skills-check is wired into lint so drift fails the build.
+
+skills-sync: ensure-venv
+	$(RUN_PYTHON) scripts/sync_claude_skills.py
+
+skills-check: ensure-venv
+	@$(RUN_PYTHON) scripts/sync_claude_skills.py --check
 
 clean:
 	$(BASE_PYTHON) -c "import pathlib, shutil; excluded=[pathlib.Path('$(VENV_DIR)'), pathlib.Path('venv')]; skip=lambda p: any(p == root or root in p.parents for root in excluded); roots=[p for p in pathlib.Path('.').rglob('__pycache__') if not skip(p)]; [shutil.rmtree(p) for p in roots]; files=[p for p in pathlib.Path('.').rglob('*.pyc') if not skip(p)]; [p.unlink() for p in files]"

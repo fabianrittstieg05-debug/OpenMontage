@@ -310,7 +310,26 @@ Load via `styles/playbook_loader.py`: `load_playbook("clean-professional")`
 ## Installed Agent Skills (Layer 3)
 
 All agent skills live in `.agents/skills/` and are managed via `npx skills add`.
-Claude Code accesses them via symlinks in `.claude/skills/`.
+That directory is the single source of truth — `agent_skills` pointers on tools,
+the registry, and `tests/contracts/test_agent_skill_pointers.py` all resolve
+against it.
+
+Claude Code only auto-discovers skills under `.claude/skills/<name>/SKILL.md`, so
+a subset is also exposed there as **generated pointer stubs** — each one carries
+its canonical frontmatter verbatim (so triggering is identical) and a body that
+routes to `.agents/skills/<name>/`. They are not symlinks: the desktop app skips
+symlinked skill directories, and a Windows checkout without `core.symlinks`
+materializes them as plain text files.
+
+Edit the skill in `.agents/skills/`, never the stub, then:
+
+```bash
+python scripts/sync_claude_skills.py          # regenerate the stubs
+python scripts/sync_claude_skills.py --check  # CI guard; also a contract test
+```
+
+To expose another skill to Claude Code, add it to `EXPOSED_SKILLS` in
+`scripts/sync_claude_skills.py` and regenerate.
 
 | Category | Installed Skills | Source |
 |----------|-----------------|--------|
