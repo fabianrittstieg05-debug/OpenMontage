@@ -575,9 +575,25 @@ class TestAgentContextFiles:
             assert header in contents
 
     def test_platform_wrappers_reference_agent_guide(self):
-        for path in ("CLAUDE.md", "CODEX.md", "CURSOR.md", "COPILOT.md", "AGENTS.md"):
-            contents = (PROJECT_ROOT / path).read_text(encoding="utf-8")
-            assert "AGENT_GUIDE.md" in contents
+        """Every assistant entry point that exists must redirect to AGENT_GUIDE.md.
+
+        `CLAUDE.md` is required — it is the entry point this project targets. The
+        other wrappers are optional: the multi-assistant configs (`CODEX.md`,
+        `CURSOR.md`, `COPILOT.md`, `AGENTS.md`, `.windsurfrules`, `.cursor/`,
+        `.codex/`) were intentionally dropped when the project narrowed to Claude
+        Code. Asserting they exist would make an intentional removal look like a
+        regression; asserting nothing would let a wrapper stop redirecting.
+        """
+        required = (PROJECT_ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+        assert "AGENT_GUIDE.md" in required, "CLAUDE.md must redirect to AGENT_GUIDE.md"
+
+        for name in ("CODEX.md", "CURSOR.md", "COPILOT.md", "AGENTS.md"):
+            path = PROJECT_ROOT / name
+            if not path.exists():
+                continue
+            assert "AGENT_GUIDE.md" in path.read_text(encoding="utf-8"), (
+                f"{name} exists but does not redirect to AGENT_GUIDE.md"
+            )
 
 
 # ---- Media Profiles ----
