@@ -102,5 +102,14 @@ venv/
 # used by blender_world). These are checksum-verified but never committed.
 .runtime/
 
+# Puppeteer/Chrome browser downloads. `npx @puppeteer/browsers install ...`
+# defaults to the CURRENT DIRECTORY, so running it in the repo root drops a
+# ~270MB browser here. HyperFrames manages its own Chrome under
+# ~/.cache/hyperframes/chrome/, so this copy is never read — but ignore it so a
+# stray `git add -A` can't commit a 200MB binary into history permanently.
+chrome-headless-shell/
+chrome/
+.cache/puppeteer/
+
 # Local Wan / diffusers GPU environment
 .venv-wan/
