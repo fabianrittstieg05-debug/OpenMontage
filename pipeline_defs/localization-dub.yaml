@@ -117,12 +117,10 @@ stages:
       - tts_selector
       - subtitle_gen
     optional_tools:
-      - lip_sync
       - audio_enhance
     tools_available:
       - tts_selector
       - subtitle_gen
-      - lip_sync
       - audio_enhance
     checkpoint_required: true
     human_approval_default: true

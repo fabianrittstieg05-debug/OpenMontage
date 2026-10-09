@@ -168,20 +168,14 @@ stages:
       - asset_manifest
     required_tools:
       - tts_selector
-      - image_selector
     optional_tools:
-      - video_selector
       - math_animate
       - diagram_gen
       - code_snippet
-      - music_gen
     tools_available:
       - tts_selector
-      - image_selector
-      - video_selector
       - diagram_gen
       - code_snippet
-      - music_gen
       - math_animate
     checkpoint_required: true
     human_approval_default: true

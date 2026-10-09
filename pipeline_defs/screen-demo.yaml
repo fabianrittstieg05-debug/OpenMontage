@@ -152,13 +152,11 @@ stages:
     optional_tools:
       - subtitle_gen
       - tts_selector
-      - image_selector
       - diagram_gen
       - audio_enhance
     tools_available:
       - subtitle_gen
       - tts_selector
-      - image_selector
       - diagram_gen
       - audio_enhance
     checkpoint_required: true

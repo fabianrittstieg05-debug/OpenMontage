@@ -118,11 +118,9 @@ stages:
       - subtitle_gen     # captions
     optional_tools:
       - audio_mixer      # audio prep
-      - image_selector
     tools_available:
       - subtitle_gen
       - audio_mixer
-      - image_selector
     checkpoint_required: true
     human_approval_default: true
     review_focus:

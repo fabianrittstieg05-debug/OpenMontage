@@ -9,11 +9,10 @@ def _read(relative_path: str) -> str:
 
 
 def test_music_plans_discover_all_music_capabilities() -> None:
+    # The cinematic and documentary-montage directors were removed with their
+    # pipelines; the remaining files still carry the music-plan contract.
     instruction_files = [
         "AGENT_GUIDE.md",
-        "skills/pipelines/cinematic/idea-director.md",
-        "skills/pipelines/cinematic/proposal-director.md",
-        "skills/pipelines/documentary-montage/idea-director.md",
         "skills/pipelines/explainer/proposal-director.md",
     ]
 
