@@ -7,8 +7,8 @@ characters: cartoon shorts, mascot explainers, music-led character scenes,
 dialogue between simple characters, or reference-inspired local animation.
 
 Do not use this pipeline for one-off motion graphics with no acting. Route those
-to `animation`. Do not use it for avatar presenter lip-sync. Route that to
-`avatar-spokesperson`.
+to `animation`. Avatar presenter lip-sync is not available in this project — say
+so plainly rather than substituting a rigged character for a presenter.
 
 ## Contract
 

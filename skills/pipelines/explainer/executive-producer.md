@@ -364,7 +364,7 @@ The EP doesn't replace any director skill — it wraps them. Each director skill
 
 [EP] === STAGE 2: proposal ===
 [EP] Spawning proposal-director with research_brief...
-[EP] Preflight: ElevenLabs ✓, image_selector ✓, video_selector ✗ (no API keys), music_gen ✓
+[EP] Preflight: piper_tts ✓, diagram_gen ✓, math_animate ✗ (pip install manim), music_library ✓
 [EP] 3 concepts presented to user:
 [EP]   C1: "The 200ms Journey" (data_driven, $0.64)
 [EP]   C2: "Your ISP Knows Everything" (contrarian, $0.58)

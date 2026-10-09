@@ -11,7 +11,7 @@ You have a scene plan and script. Your job is to generate the supporting assets 
 | Schema | `schemas/artifacts/asset_manifest.schema.json` | Artifact validation |
 | Prior artifacts | Scene plan, Script | What assets to create |
 | Tools | `subtitle_gen`, `audio_mixer` | Subtitle and audio generation |
-| Tools | `image_selector` (optional) | Stock images for overlays |
+| Tools | `diagram_gen`, `code_snippet` (optional) | Built overlays |
 | Tools | `pixabay_music` (optional) | Royalty-free background music |
 
 ## Process

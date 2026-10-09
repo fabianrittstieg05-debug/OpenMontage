@@ -31,7 +31,6 @@ A `render_runtime_selection` decision with only one runtime in `options_consider
 
 Pick the storytelling anchor:
 
-- `talking_head`
 - `broll_footage`
 - `screen_recording`
 - `still_sequence`

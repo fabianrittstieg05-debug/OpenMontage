@@ -227,11 +227,11 @@ CHECK: Approval gate (CRITICAL)
 
 CHECK: Animation approach feasibility
   - Does the selected animation approach's required tools exist in the registry?
-  - If image_animation selected: is image_selector available? Which providers? Is Remotion available?
-  - If clip_video selected: is video_selector available? Which providers?
+  - Which built-visual tools are available (`diagram_gen`, `code_snippet`,
+    `math_animate`, `threejs_world`)? Is Remotion available? Is HyperFrames?
   - If manim selected: is math_animate (ManimCE) available?
   - If remotion_dataviz selected: is video_compose (Remotion) available?
-  - If diagram_stills selected: is diagram_gen + image_selector available?
+  - If diagram-led selected: is `diagram_gen` available?
   - If any required tool is unavailable: alert user, offer alternatives with specific setup instructions
   - NEVER silently downgrade — if an approach needs a key the user doesn't have, STOP and tell them
 
@@ -426,5 +426,5 @@ The EP doesn't replace any director skill — it wraps them. Each director skill
 - **Ignoring text sharpness**: The #1 animation quality issue. Always verify text readability at final resolution.
 - **Letting reuse strategy erode**: If the proposal specified 3 templates, the scene plan should use 3 templates, not 8 unique designs.
 - **Not probing outputs**: Always ffprobe the final video. Never trust metadata alone.
-- **Losing animation mode context**: If the proposal selected Manim, every downstream stage should know it's a Manim project. Don't let stages default to generic image_selector when programmatic animation was approved.
+- **Losing animation mode context**: If the proposal selected Manim, every downstream stage should know it's a Manim project. Don't let stages default to a generic diagram when programmatic animation was approved.
 - **Skipping math accuracy checks**: For technical topics, this is non-negotiable. A wrong animation is worse than no animation.

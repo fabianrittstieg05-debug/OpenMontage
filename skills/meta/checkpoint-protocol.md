@@ -63,7 +63,7 @@ At pipeline initialization (before any stage), call `init_project()`:
 
 ```python
 from lib.checkpoint import init_project
-init_project("my-project", title="My Project", pipeline_type="cinematic")
+init_project("my-project", title="My Project", pipeline_type="animation")
 ```
 
 This creates the canonical directory layout and writes `project.json` — the

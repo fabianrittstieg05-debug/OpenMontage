@@ -68,7 +68,7 @@ Single-step restoration when both face and background need improvement.
 ### 4. Archival Photo for Talking Head
 
 ```
-face_restore → talking_head tool (SadTalker)
+face_restore → composition (as a cleaned-up source frame)
 ```
 
 Restore the source face image before feeding into the talking-head animation pipeline.

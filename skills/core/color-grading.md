@@ -156,6 +156,6 @@ When using the `color_grade` tool:
 3. **Test on a single frame first** before grading the full video — saves render time
 4. **Grade after face enhancement** — the enhancement chain order in `skills/creative/enhancement-strategy.md` is: subtitle → face → color → audio → final
 5. **Use the same profile across all clips in a video** — visual consistency is critical
-6. **For generated visuals** (image_selector, math_animate), apply a lighter grade (0.5-0.6) since they're already stylized
+6. **For built visuals** (`diagram_gen`, `math_animate`, composed scenes), apply a lighter grade (0.5-0.6) since they're already stylized
 7. **Use the Wong palette** for any generated graphics (diagrams, code snippets, overlays) to ensure colorblind accessibility
 8. **For custom grades**, follow the filter chain order above and keep parameter changes small — ±0.05 per adjustment, then review

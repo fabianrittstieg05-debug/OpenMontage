@@ -95,7 +95,7 @@ Recommended metadata keys:
 > 4. **Spatial Framing** — shot size + position-in-frame + depth (FG/MG/BG) + camera-height-relative; and how those CHANGE. Manim cares about layout grid + element positions; AI-video cares about full cinematographic framing.
 > 5. **Camera** — playback speed → lens distortion → height → angle → focus/DoF → steadiness → movement. For Manim and pure motion-graphics, default to N/A unless using a virtual camera move (`MoveCamera`, `self.frame`). For `anime_scene` and AI-video, specify fully.
 >
-> Tie this back to `animation_mode` in scene metadata: a Manim scene that lists Camera fully is over-specified; an AI-video scene that omits Camera is under-specified. See `skills/creative/video-gen-prompting.md` for the primitive vocabulary.
+> Tie this back to `animation_mode` in scene metadata: a Manim scene that lists Camera fully is over-specified; an AI-video scene that omits Camera is under-specified. See `skills/creative/shot-vocabulary.md` for the primitive vocabulary.
 
 > **Overlays callout.** Overlays (titles, subtitles, HUD, watermarks, framing graphics, lower-thirds, `hero_title`, `section_title`, `provider_chip`) are NOT part of the scene's foreground/midground/background depth axis. List them separately in scene metadata (`overlays: [...]`) with content and placement. Never describe an overlay as "in the foreground" — that confuses both downstream tools and any video-understanding model that re-analyzes the output.
 

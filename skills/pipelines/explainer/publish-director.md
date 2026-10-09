@@ -66,7 +66,8 @@ Describe a thumbnail that:
 }
 ```
 
-*Note: Actual thumbnail generation happens via image_selector if available, otherwise it's a concept for manual creation.*
+*Note: thumbnails are composed, not generated — build one as a still frame from
+the composition, or hand the concept to the user.*
 
 ### Step 4: Create Chapter Markers
 

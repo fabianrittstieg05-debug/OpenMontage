@@ -21,7 +21,6 @@ Top-level voice performance:
   "pause_policy": "Use short pauses after setup lines and longer pauses before reversals or important claims.",
   "provider_notes": {
     "openai": "Use instructions for emotional arc and emphasis.",
-    "google_tts": "Use SSML input with break tags when the selected voice supports it.",
     "elevenlabs": "Use lower stability and moderate style for expressive narration."
   }
 }

@@ -200,6 +200,7 @@ When building short-form content:
 4. **Hook in frame 1** — text overlay + voice starts immediately, no intro
 5. **Visual change every 1-3 seconds** — use quick cuts, zooms, text pops
 6. **Voiceover at 180-200 WPM** — faster than long-form
-7. **Music starts immediately** — set `music_gen` to energetic BPM (110-140)
+7. **Music starts immediately** — pick a track with energetic BPM (110-140) from
+   `music_library/` or `pixabay_music`
 8. **Target 15-30 seconds** for maximum completion rate
 9. **Test on phone** — view at actual mobile size before publishing

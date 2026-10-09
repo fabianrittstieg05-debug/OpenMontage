@@ -381,8 +381,7 @@ MUSIC PLAN
 │   ├── cosmic_interstellar_space.mp3 (3:13) — ambient, cosmic
 │   ├── cinematic_epic.mp3 (2:45) — dramatic, building
 │   └── lofi_beat.mp3 (4:00) — chill, electronic
-├── Royalty-free search: [providers / unavailable]
-├── AI generation: music_gen (ElevenLabs) — UNAVAILABLE (plan limit)
+├── Keyless search: pixabay_music (frozen into assets/ on fetch)
 └── Recommendation: Use "cosmic_interstellar_space.mp3" from your library
     OR provide a different track before asset generation
 
@@ -407,15 +406,15 @@ Would you like to:
 Itemize every paid operation:
 
 ```
-COST ESTIMATE
-├── TTS Narration: tts_selector × 1 run (~150 words)       $0.18
-├── Image Generation: image_selector × 6 scenes                  $0.24
-├── Music: music_gen × 1 track (30s)                        $0.10
-├── Video Generation: video_selector × 2 clips (optional)   $0.00 (local)
-├── Audio Enhancement: audio_enhance × 1 pass               $0.00 (local)
-└── TOTAL ESTIMATED                                         $0.52
-    Budget cap: $2.00
-    Verdict: within_budget ✓
+PRODUCTION ESTIMATE  (every tool is local and free — this is time, not spend)
+├── Narration: piper_tts × ~150 words                      ~10s
+├── Built visuals: diagram_gen × 3, code_snippet × 1       ~30s
+├── Music: music_library × 1 track                          instant
+├── Audio mix: audio_mixer + audio_enhance                  ~15s
+├── Render: HyperFrames 1080p30 × 45s                       ~3-6 min
+└── TOTAL                                                   ~5-8 min
+    Cost: $0.00
+    Reproducible: yes — same inputs, same frames
     Headroom: $1.48 for revisions/regeneration
 ```
 
@@ -502,24 +501,23 @@ The `selected_concept` in the proposal_packet effectively replaces what the old 
 **Production plan (for selected concept 1, Remotion available):**
 ```
 script   → no tools, no cost
-scene    → no tools, no cost — design 4 Remotion component scenes + 4 AI image scenes
-assets   → tts_selector ($0.22), image_selector × 4 ($0.16), music_gen ($0.10)
-edit     → no tools, no cost
-compose  → video_compose/Remotion render (free) — animated text cards, stat cards,
-           spring transitions, image scenes with animation. NOT Ken Burns.
-publish  → no tools, no cost
-TOTAL: $0.48 of $2.00 budget (saved $0.16 by using Remotion components instead of
-       generating images for text/data scenes)
+scene    → no tools — design 8 Remotion component scenes
+assets   → piper_tts (narration), diagram_gen × 3, music_library × 1
+edit     → no tools
+compose  → video_compose/Remotion render — animated text cards, stat cards,
+           spring transitions. NOT Ken Burns.
+publish  → no tools
+TOTAL: $0.00, ~6 min wall clock, fully reproducible
 ```
 
 **Production plan (for selected concept 1, FFmpeg only):**
 ```
 script   → no tools, no cost
 scene    → no tools, no cost
-assets   → tts_selector ($0.22), image_selector × 8 ($0.32), music_gen ($0.10)
-edit     → no tools, no cost
-compose  → video_compose/FFmpeg (free) — Ken Burns pan-and-zoom on images
-publish  → no tools, no cost
+assets   → piper_tts (narration), diagram_gen × 4, music_library × 1
+edit     → no tools
+compose  → video_compose/FFmpeg — cuts and subtitle burn over built stills
+publish  → no tools
 TOTAL: $0.64 of $2.00 budget
 ```
 

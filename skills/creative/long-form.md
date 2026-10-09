@@ -207,7 +207,7 @@ When building long-form content:
 2. **Complete the hook by 0:30** — follow the storytelling.md Explainer Arc template
 3. **Re-hook at 2:00-3:00** — this is the retention valley
 4. **Pattern interrupt every 45-90 seconds** — B-roll, text overlay, visual change
-5. **Continuous music bed** — use `music_gen` for full-length track, duck 18-20 dB
+5. **Continuous music bed** — pick a full-length track from `music_library/`, duck 18-20 dB
 6. **Narrate at 150-160 WPM** — slower than short-form, clearer for learning
 7. **Check LUFS per chapter** — should be consistent (< 2 LUFS variation)
 8. **Reserve last 20 seconds** for end screen — no essential content there

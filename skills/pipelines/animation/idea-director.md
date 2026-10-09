@@ -33,8 +33,8 @@ Figure out which tools are supposed to do the work:
 - `diagram_gen`
 - `math_animate`
 - `code_snippet`
-- `image_selector`
-- `video_selector` or a concrete video provider tool
+- `diagram_gen`, `code_snippet`, `math_animate` for built visuals
+- `threejs_world` / `blender_world` for 3D
 - source-provided art
 
 If the requested mode depends on unavailable tools, say so in the brief metadata immediately.

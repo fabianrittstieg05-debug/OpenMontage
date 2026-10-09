@@ -12,8 +12,8 @@
 The tool animates *whatever image you give it*, and it needs a **drawn humanoid** (head, 2 arms, 2 legs, limbs separated, plain light bg). Before building, **present the user these options** and pick one (default to *generate* when they have nothing) — this is also what stops every video looking like the same mascot:
 
 1. **User uploads a drawing** — their own humanoid doodle. Best result; it's their character.
-2. **User uploads a photo / any image** — first **doodle-ify it** (`image_selector` img2img, FLUX/Recraft: "turn this into a simple child's crayon doodle of a humanoid, full body, plain white bg") → then rig. (The "hand-drawn" look comes from this step; a raw photo warps badly.)
-3. **Generate a fresh character** ⭐ (recommended default) — `image_selector` (FLUX/Imagen): *"a child's crayon drawing of a character, full body, front-facing, A-pose with arms and legs separated, plain white background, no shadow, no text."* Unique every video.
+2. **User uploads a photo / any image** — trace it by hand into vector strokes (see `/ink-art`), then animate: "turn this into a simple child's crayon doodle of a humanoid, full body, plain white bg") → then rig. (The "hand-drawn" look comes from this step; a raw photo warps badly.)
+3. **Draw a fresh character** ⭐ (recommended default) — author it as SVG via `/ink-art` or `svg_rig_builder`: *"a child's crayon drawing of a character, full body, front-facing, A-pose with arms and legs separated, plain white background, no shadow, no text."* Unique every video.
 4. **Grab a stock character** — `pixabay_image` / `pexels_image`, filtered to a *drawn humanoid on a plain bg*. Hit-or-miss (most stock is photos) — prefer #3.
 
 Bundled example characters are **demo-only** — do not ship them as the user's character. Options 1–4 all need the **auto-rig Docker service** (below); if it isn't up, say so.

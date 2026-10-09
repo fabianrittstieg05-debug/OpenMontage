@@ -78,7 +78,7 @@ Follow this structure (adapt to skill type):
 
 2. **Include examples.** Show what good output looks like. Show what bad output looks like. The contrast teaches more than instructions alone.
 
-3. **Reference concrete resources.** Don't say "check the schema." Say "validate against `schemas/artifacts/brief.schema.json`." Don't say "use a tool." Say "use `image_selector` with the playbook's `image_prompt_prefix`."
+3. **Reference concrete resources.** Don't say "check the schema." Say "validate against `schemas/artifacts/brief.schema.json`." Don't say "use a tool." Say "use `diagram_gen` with the playbook's `asset_generation.diagram_style`."
 
 4. **Include a self-evaluation rubric.** Every skill should end with a scoring table. This forces the agent to check its own work before proceeding.
 
@@ -108,5 +108,7 @@ Quick checks:
 - **Creating skills for one-off tasks**: If you'll never do this again, just do it inline. Skills are for patterns.
 - **Vague instructions**: "Make it good" is not a skill. Specificity is what makes a skill useful.
 - **No self-evaluation**: Without a rubric, the agent has no way to know if it followed the skill correctly.
-- **Missing prerequisites**: A skill that references `image_selector` but doesn't list it in prerequisites will confuse future agents.
+- **Missing prerequisites**: a skill that references a tool without listing it in
+  prerequisites will confuse future agents. Check the name exists in the registry
+  first — pointing at a deleted tool is worse than naming none.
 - **Over-engineering**: A 500-line skill for a simple task is worse than a 50-line one. Match complexity to the task.

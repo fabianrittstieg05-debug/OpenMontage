@@ -9,8 +9,16 @@ def _read(relative_path: str) -> str:
 
 
 def test_music_plans_discover_all_music_capabilities() -> None:
-    # The cinematic and documentary-montage directors were removed with their
-    # pipelines; the remaining files still carry the music-plan contract.
+    """A music plan must enumerate every music source that actually exists.
+
+    The point of the contract is that the agent surfaces music options at
+    proposal time instead of discovering a gap at the asset stage.
+
+    `music_generation` was dropped from this list when the generative tier was
+    removed: no tool offers that capability any more, so instructing an agent to
+    query it would send it looking for something that cannot exist. The
+    cinematic and documentary-montage directors went with their pipelines.
+    """
     instruction_files = [
         "AGENT_GUIDE.md",
         "skills/pipelines/explainer/proposal-director.md",
@@ -18,7 +26,7 @@ def test_music_plans_discover_all_music_capabilities() -> None:
 
     for relative_path in instruction_files:
         text = _read(relative_path)
-        for capability in ("music_library", "music_search", "music_generation"):
+        for capability in ("music_library", "music_search"):
             assert f'get_by_capability("{capability}")' in text, (
                 f"{relative_path} omits the {capability!r} music source"
             )

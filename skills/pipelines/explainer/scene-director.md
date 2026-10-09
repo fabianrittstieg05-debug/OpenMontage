@@ -13,7 +13,7 @@ This is where words become visuals. A great script with a bad scene plan produce
 | Schema | `schemas/artifacts/scene_plan.schema.json` | Artifact validation |
 | Prior artifacts | `state.artifacts["script"]["script"]`, `state.artifacts["proposal"]["proposal_packet"]` | Script sections and proposal packet |
 | Playbook | Active style playbook | Visual language, transitions, motion rules |
-| Layer 3 | `.agents/skills/flux-best-practices/`, `.agents/skills/beautiful-mermaid/`, `.agents/skills/manim-composer/` | Image gen, diagram, animation knowledge |
+| Layer 3 | `.agents/skills/beautiful-mermaid/`, `.agents/skills/manim-composer/` | Image gen, diagram, animation knowledge |
 
 ## Process
 
@@ -32,7 +32,7 @@ Read every section. For each, note:
 1. **How do top creators visualize this?** Search YouTube thumbnails, blog diagrams, conference slides for the topic.
 2. **What visual metaphors work?** Some concepts have well-known visual representations (e.g., neural networks as node graphs, encryption as locks/keys). Use these — viewers recognize them instantly.
 3. **What's novel?** Is there a visual approach nobody has tried? A fresh visualization can make an explainer memorable.
-4. **What's feasible?** Match your ambitions to available tools: `image_selector` (static images), `diagram_gen` (Mermaid flowcharts/sequences), `code_snippet` (syntax-highlighted code), Remotion (motion graphics, text animations), Manim (mathematical animations).
+4. **What's feasible?** Match your ambitions to built visuals: `diagram_gen` (Mermaid flowcharts/sequences), `code_snippet` (syntax-highlighted code), Remotion (motion graphics, text animations), Manim (mathematical animations).
 
 If you encounter a visualization need that no existing skill covers, use the **Skill Creator** (`skills/meta/skill-creator.md`) to create a new skill.
 
@@ -86,9 +86,9 @@ description; the Edit stage converts that intent into `cut.type`.
 | `progress_bar` | Journey visualization, completion, stacked metrics | Remotion ProgressBar (fill/pulse/step animations) | 4-6s |
 | `text_card` | Statements, closing messages, key terms | Remotion TextCard (centered, spring animation) | 3-5s |
 | `animation` | Concepts needing motion (data flow, math) | Remotion, Manim | 4-10s |
-| `diagram` | Processes, architecture, relationships | `diagram_gen` (Mermaid), `image_selector` | 4-8s |
-| `generated` | Illustrations, metaphors, real-world imagery | `image_selector` (FLUX/GPT Image) | 3-6s |
-| `talking_head` | AI avatar speaking (if HeyGen available) | HeyGen tools | 5-15s |
+| `diagram` | Processes, architecture, relationships | `diagram_gen` (Mermaid) | 4-8s |
+| `formula` | Maths, proofs, geometry | `math_animate` (Manim) | 4-10s |
+| `talking_head` | A real speaker from supplied footage | the `talking-head` pipeline | 5-15s |
 | `broll` | Context, real-world examples | Stock or generated footage | 3-6s |
 | `screen_recording` | Code demos, UI walkthroughs | Recorded or simulated | 5-15s |
 
@@ -109,7 +109,7 @@ Build a diagram progressively — start empty, add components with labels as the
 
 **Analogy Visualization**
 Show the abstract concept alongside its real-world analogy. Split screen or side-by-side.
-- Tools: `image_selector` for both sides
+- Tools: `diagram_gen` or composed typography for both sides
 - Example: "Left: actual vector space with dots. Right: a library with books sorted by topic."
 
 **Stat Card Punch**
@@ -178,7 +178,7 @@ If the video includes narration, the script **must** be written to fit the video
 > 4. **Spatial Framing** — shot size + position-in-frame + depth (FG/MG/BG) + camera-height-relative; and how those CHANGE. For static Remotion scenes, document the layout grid + which element occupies the visual center.
 > 5. **Camera** — playback speed → lens distortion → height → angle → focus/DoF → steadiness → movement. Mark N/A for native-Remotion scenes; specify fully for `generated`/`broll`/`image_animation` scenes.
 >
-> See `skills/creative/video-gen-prompting.md` for the primitive vocabulary.
+> See `skills/creative/shot-vocabulary.md` for the primitive vocabulary.
 
 > **Overlays callout.** Overlays (titles, subtitles, HUD, watermarks, framing graphics, lower-thirds, section_title bars, stat_reveal chips, hero_title overlays, provider chips) are NOT part of the scene's foreground/midground/background depth axis. List them separately in scene metadata (`overlays: [...]`) with content and placement. Never describe an overlay as "in the foreground" — that confuses both downstream tools and any video-understanding model that re-analyzes the output.
 

@@ -27,7 +27,7 @@ For synthetic mode, the asset stage produces:
 |-------|----------|---------|
 | Schema | `schemas/artifacts/asset_manifest.schema.json` | Artifact validation |
 | Prior artifacts | `state.artifacts["scene_plan"]["scene_plan"]`, `state.artifacts["script"]["script"]`, `state.artifacts["idea"]["brief"]` | What to produce |
-| Tools | `subtitle_gen`, `audio_enhance`, `tts_selector`, `image_selector`, `diagram_gen` — selectors auto-discover all available providers from the registry | Generation capabilities |
+| Tools | `subtitle_gen`, `audio_enhance`, `tts_selector`, `diagram_gen`, `code_snippet` — selectors auto-discover all available providers from the registry | Generation capabilities |
 | Playbook | Active style playbook | Typography and overlay styling |
 
 ## Process
@@ -89,7 +89,7 @@ If the recording is silent:
 
 ### 5. Only Generate Supplementary Visuals When They Earn It
 
-Use `image_selector` or `diagram_gen` only for:
+Use `diagram_gen` or `code_snippet` only for:
 
 - a short opening card,
 - a step transition card,

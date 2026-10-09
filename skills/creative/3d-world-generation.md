@@ -5,9 +5,9 @@ Use this Layer 2 skill when an animation or cinematic project needs a real, cont
 ## Capability route
 
 1. Query the registry for `3d_world_generation`, `3d_asset_acquisition`, `3d_asset_generation`, and `3d_world_rendering`.
-2. Read the selected tools' `agent_skills`; production work requires both `.agents/skills/threejs-world-generation` and `.agents/skills/3d-asset-generation`.
+2. Read the selected tools' `agent_skills`; production work requires `.agents/skills/threejs-world-generation`.
 3. Choose the delivery path at proposal. Use `render_runtime="hyperframes"` and `composition_mode="atelier"` for an editable browser-native Three.js deliverable. Use `render_runtime="ffmpeg"` for a Blender-rendered PNG sequence plus governed audio/video mux. The latter is still real 3D motion; FFmpeg only packages Blender's frames.
-4. Use either the `animation` or `cinematic` pipeline. A 3D world is a reusable production capability, not a separate pipeline.
+4. Use the `animation` pipeline. A 3D world is a reusable production capability, not a separate pipeline.
 5. Lock a fidelity tier. `blockout` is only for semantic layout and camera iteration. Hero/reference-led output requires `production`, licensed catalogs for repeated assets, Atlas/fal for unique assets when useful, and `blender_world` for scene assembly/rendering.
 
 ## Artifact mapping
@@ -17,7 +17,7 @@ Use this Layer 2 skill when an animation or cinematic project needs a real, cont
 | proposal | Record world promise, explicit-vs-inferred policy, fidelity tier, and either the browser-native Three.js/HyperFrames route or production Blender/FFmpeg route. |
 | script | Use beats or sparse titles; narration is optional. |
 | scene_plan | Define global, regional, and walk-level camera beats in one continuous coordinate system. |
-| assets | Install/inventory repeated assets with `threejs_asset_catalog`; sample unique hero assets with `atlas_3d` or `fal_3d`; assemble and render global/regional/walk stills with `blender_world`; register meshes as `type="3d_asset"` and the editable world spec/`.blend` as `type="3d_world"`. |
+| assets | Install/inventory repeated assets with `threejs_asset_catalog`; assemble and render global/regional/walk stills with `blender_world`; register meshes as `type="3d_asset"` and the editable world spec/`.blend` as `type="3d_world"`. |
 | assets review | Produce semantic/wireframe diagnostics and representative snapshots; log bounded refinement issues. |
 | edit | Carry camera times without changing region IDs or seed. |
 | compose | Browser-native: call `video_compose` on the authored HyperFrames workspace. Production Blender: render a numbered PNG sequence with resume enabled, then let `video_compose`/FFmpeg package frames and audio without pretending FFmpeg generated the motion. |

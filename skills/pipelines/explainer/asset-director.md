@@ -31,8 +31,8 @@ Quick routing for common explainer needs:
 | Schema | `schemas/artifacts/asset_manifest.schema.json` | Artifact validation |
 | Prior artifacts | `state.artifacts["scene_plan"]["scene_plan"]`, `state.artifacts["script"]["script"]`, `state.artifacts["proposal"]["proposal_packet"]` | What to produce |
 | Playbook | Active style playbook | Image prompts, diagram style, audio preferences |
-| Tools | `tts_selector`, `image_selector`, `video_selector`, `diagram_gen`, `code_snippet`, `music_gen` — selectors auto-discover all available providers from the registry | Generation capabilities |
-| Cost tracker | `tools/cost_tracker.py` | Budget governance |
+| Tools | `tts_selector` (→ `piper_tts`), `diagram_gen`, `code_snippet`, `math_animate`, `music_library`, `pixabay_music` | Deterministic asset production |
+| Cost tracker | `tools/cost_tracker.py` | Records time and units — every tool here is free |
 
 ## Process
 
@@ -52,34 +52,43 @@ Asset Task:
 
 Also create tasks for:
 - **Narration audio** — one per script section (use `tts_selector` or a concrete TTS provider)
-- **Background music** — one track for the whole video (use `music_gen` or select from library)
-- **Sound effects** — per playbook's `sfx_style` (optional, use `music_gen` or stock)
+- **Background music** — one track for the whole video, from `music_library/` or
+  `pixabay_music`
+- **Sound effects** — per playbook's `sfx_style` (optional). There is no SFX
+  library tool; for frame-synced motion-design sound (ticks, impacts, risers) a
+  short seeded numpy-synthesised bed is deterministic, timed to the exact frame,
+  and ships with the project as an auditable generator script
 
-### Step 2: Check Budget
+### Step 2: Check Time, Not Spend
 
-Before generating anything:
-1. Sum all estimated costs from the asset tasks
-2. Compare against the cost tracker's remaining budget
-3. If over budget:
-  - Switch expensive tools to cheaper alternatives (use `tts_selector` with `preferred_provider` to route to cheaper TTS; use `image_selector` to route to cheaper image providers)
-   - Reduce image count (combine similar scenes)
-   - Skip optional assets (SFX, B-roll)
-4. Get cost approval via cost tracker before proceeding
+Nothing here costs money — every tool is local and free. The budget that matters
+is wall-clock time and the user's patience.
+
+1. Estimate render and synthesis time from the asset tasks.
+2. If a scene needs an asset no tool can make (photoreal footage, a generated
+   illustration), say so now rather than at compose. Propose a deterministic
+   substitute: a diagram, a typographic treatment, a Manim figure, a procedural
+   3D shot, or supplied footage.
+3. Never imply an API key or upgrade would unlock it. None exists.
 
 ### Step 2b: Sample Preview (Prevents Wasted Spend)
 
 Before batch-generating assets, produce one sample of each expensive asset type and present them to the user for approval:
 
 1. **TTS sample**: Generate narration for `script.voice_performance.sample_section_id` when present; otherwise pick the section with the most demanding delivery. Play it for the user. Confirm voice, pace, pauses, emphasis, and tone are acceptable before generating the rest.
-2. **Image sample**: Generate one image for the most representative scene. Show it to the user. Confirm the style, quality, and prompt approach before batch-generating all images.
-3. **Music sample** (if using `music_gen`): Generate one short clip. Confirm mood and energy before committing.
+2. **Visual sample**: Build one scene's visual — diagram, code card, Manim figure,
+   or composed title — and show it. Confirm the style and density before building
+   the rest. Because these are deterministic, an approved sample is a guarantee:
+   the same inputs will produce exactly that frame again.
+3. **Music sample**: Play the candidate track so the user can confirm mood and energy.
 
 If the user rejects a sample:
 - Adjust the parameters (voice, prompt style, provider) and regenerate the sample.
 - Do not batch-generate until the sample is approved.
 - Max 3 sample iterations per asset type before escalating to the user for a decision.
 
-This step typically costs $0.03–0.08 total and prevents $1–3 of wasted generation.
+This costs nothing but a little time, and prevents rebuilding a whole scene set
+in the wrong style.
 
 ### Step 3: Generate Narration
 
@@ -108,16 +117,22 @@ or ignores intended pauses, do not batch the remaining sections. Revise the
 
 Process asset tasks grouped by tool for efficiency:
 
-**Images (`image_selector`)**:
-1. Build the prompt from the scene's actual purpose:
-   - scene-specific shot/lighting/texture cues from `shot_language`, `shot_intent`, and `texture_keywords`
-   - an adapted visual anchor from the playbook or custom identity
-   - the concrete subject/action/environment
-   Use `lib/shot_prompt_builder.py` when helpful.
-2. Add negative prompt from playbook
-3. Include consistency anchors (same character/world/palette family), but do NOT reuse the exact same phrasing for every image
-4. Generate and verify the file exists
-5. If the result doesn't match expectations, refine the prompt and regenerate (max 2 retries)
+An explainer's visuals are **built, not generated**. There is no image or video
+generation in this repo, so every scene resolves to one of these:
+
+| Scene needs | Build it with |
+|---|---|
+| a process, system, or relationship | `diagram_gen` (Mermaid) |
+| code, a terminal, a config | `code_snippet`, or Remotion's `TerminalScene` |
+| a number, trend, or comparison | Remotion charts (`bar_chart`, `line_chart`, `kpi_grid`) or `d3-viz` |
+| a formula, proof, or geometry | `math_animate` (Manim) |
+| a claim, quote, or beat | typography in the composition itself — see `skills/creative/typography.md` |
+| a place, object, or camera move | `threejs_world`, or `blender_world` for reference-grade |
+| a real UI or app | `screen_recorder` / `cap_recorder`, or synthetic terminal capture |
+| supplied footage | the `hybrid` pipeline instead |
+
+If a scene cannot be expressed any of those ways, the scene plan is wrong for
+this toolkit — go back to the scene director rather than faking it.
 
 **Diagrams (`diagram_gen`)**:
 1. Convert the scene description into valid Mermaid syntax
@@ -137,12 +152,19 @@ Process asset tasks grouped by tool for efficiency:
 3. Source the background track in this priority order:
    - **User-selected library track**: If the proposal specified a track from `music_library/`, copy it to `projects/<project>/assets/music/background_music.mp3`
    - **User music library (`music_library/`)**: If the folder exists and has tracks, pick the best match for the playbook's `audio.music_mood`. List candidates by filename and let the EP decide.
-   - **Music generation API**: Use `music_gen` (ElevenLabs) or `suno_music` if available. Check status via registry first — if the tool is unavailable or quota-exhausted, skip immediately (do NOT attempt and fail silently).
-   - **No music available**: Log this clearly in the asset manifest as `"music_status": "unavailable"` with the reason. Do NOT silently produce a video without music — the EP and user should know.
+   - **Keyless search (`pixabay_music`)**: no credential needed. Whatever you fetch
+     must be written into `projects/<project>/assets/music/` — it reaches a live
+     website, so freezing the file is what keeps the project re-renderable offline.
+   - **No music available**: Log this in the asset manifest as
+     `"music_status": "unavailable"` with the reason. Do NOT silently produce a
+     video without music — the EP and user should know.
+
+   There is no music generation in this repo. Do not offer it.
 4. Duration should be at least as long as total video duration. If shorter, it can be looped by the compose stage.
 5. Verify the audio file exists at `projects/<project>/assets/music/background_music.mp3`
 
-**Critical:** If music generation fails or is unavailable, report it immediately in the asset manifest — do not defer the problem to the compose stage.
+**Critical:** If no music source resolves, report it immediately in the asset
+manifest — do not defer the problem to the compose stage.
 
 ### Step 6: Build Asset Manifest
 
@@ -175,7 +197,7 @@ Assemble all generated assets into the manifest:
       "type": "audio",
       "subtype": "music",
       "path": "assets/music/background.mp3",
-      "source_tool": "music_gen",
+      "source_tool": "pixabay_music",
       "duration_seconds": 62,
       "cost_usd": 0.05
     }
@@ -192,7 +214,9 @@ Assemble all generated assets into the manifest:
 
 ### Pre/Post Self-Review for Generation Prompts
 
-> Before sending a prompt to any generation tool — `image_selector`, `diagram_gen`, `video_selector`, even `code_snippet` styling prompts — run a three-step self-review modeled on the CHAI oversight loop ("Building a Precise Video Language with Human-AI Oversight", arXiv 2604.21718v2). Cost is small (no extra tool calls); benefit is large (avoids wasted generations). This applies just as strongly to `diagram_gen` Mermaid prompts and `image_selector` illustration prompts as it does to video generation — bad explainer visuals fail in the same way: missing subject, missing framing, vague "make it look educational."
+> Before building any visual — a `diagram_gen` Mermaid graph, a `math_animate`
+> scene, a `code_snippet` card — run a three-step self-review modeled on the CHAI oversight loop ("Building a Precise Video Language with Human-AI Oversight", arXiv 2604.21718v2). Cost is small (no extra tool calls); benefit is large (avoids wasted generations). Bad explainer visuals fail the same way regardless of how they are made: no
+clear subject, no framing, and a vague intent like "make it look educational."
 >
 > **Step 1 — Pre-caption pass.** Write the prompt the way you'd write it today. Do not over-edit; aim for a complete first draft.
 >
@@ -200,7 +224,9 @@ Assemble all generated assets into the manifest:
 > - Is it specified? If not, is the omission deliberate (e.g., "Camera N/A — Remotion native scene", "no subject motion — static diagram") or accidental?
 > - Are confusable terms disambiguated? (dolly vs zoom, pan vs truck, bird's-eye vs aerial, fisheye vs barrel, full shot vs close-up; for diagrams: flowchart vs sequence vs state diagram, top-down vs left-right)
 > - Are emotional adjectives ("clean", "professional", "modern") replaced with their visual causes (sans-serif typography, generous whitespace, monochromatic palette with one accent)?
-> - For multi-shot prompts: is identity anchored verbatim across shots? For `image_selector` prompts that recur (a character or world appearing in multiple scenes), are consistency anchors specified verbatim?
+> - For a recurring subject across scenes (a character, a world, a diagram
+>   family): is its treatment specified once and reused verbatim, so the look
+>   stays consistent?
 >
 > **Step 3 — Post-caption pass.** Rewrite filling the missing aspects, fixing confusable terms, and replacing subjective language. The post-caption is what gets sent to the generation tool.
 >
@@ -254,7 +280,10 @@ the AI model's training data — it may be wrong or outdated.
 ## Common Pitfalls
 
 - **Generating before checking budget**: Always estimate total cost first. A 60-second video with 15 images can burn $3+ quickly.
-- **Inconsistent image style**: Each image_selector call is independent. Use consistent anchors, but adapt them per scene. If you paste the same style prefix into every prompt, the video will feel machine-made and repetitive.
+- **Inconsistent visual language**: each diagram, chart and code card is built
+  independently. Derive their shared look from the playbook's design tokens so
+  they read as one system, but vary density and composition per scene — identical
+  treatment in every scene feels machine-made.
 - **Ignoring narration timing**: If TTS produces 12s of audio for a 10s section, the edit phase will struggle. Check durations.
 - **Ignoring delivery cues**: Generating raw script text when `provider_text` or `delivery_cues` exist will flatten the read. Apply the voice-performance contract first.
 - **Missing pronunciation guide**: "PostgreSQL" or "Kubernetes" will be mispronounced without explicit guidance.

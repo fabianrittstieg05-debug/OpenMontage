@@ -110,10 +110,10 @@ python -c "from tools.tool_registry import registry; import json; registry.disco
 
 | Capability | What to Check | Impact if Missing |
 |------------|---------------|-------------------|
-| `math_animate` | Is ManimCE installed and working? | Cannot do programmatic math animation — fall back to diagram_gen + image_selector |
-| `diagram_gen` | Is Mermaid rendering available? | Cannot do diagram-led animation — fall back to image_selector |
-| `video_selector` | Which video gen providers are available? | Limits AI video clip options |
-| `image_selector` | Which image gen providers are available? | Limits still frame options |
+| `math_animate` | Is ManimCE installed? | Cannot do programmatic math animation — fall back to `diagram_gen` or composed typography |
+| `diagram_gen` | Is Mermaid rendering available? | Cannot do diagram-led animation — fall back to Remotion charts or typography |
+| `threejs_world` | Available? (local, usually yes) | Limits 3D and camera-move options |
+| `blender_world` | Is Blender on PATH or `BLENDER_PATH`? | Limits reference-grade 3D rendering |
 | `tts_selector` | Which TTS providers are available? | Affects narration quality |
 | `video_compose` | Is FFmpeg/Remotion available? | Critical — cannot render without this |
 
@@ -162,16 +162,21 @@ Math/Diagram: {configured}/{total}
 
 Present the approaches as clear options:
 
-| Approach | What It Looks Like | Tools Required | Cost | Proven? |
-|----------|-------------------|----------------|------|---------|
-| **A: Image-Based Animation (Remotion)** | AI-generated keyframes with crossfade, camera motion, particles. Looks like moving anime/illustration. | `image_selector` (any provider) + Remotion | Pull per-image cost from the chosen provider's `estimate_cost`; 2-3 images per scene is typical | ✅ Proven (mori-no-seishin) |
-| **B: Clip-Based Video** | AI-generated video clips assembled as a story. Most cinematic but least consistent. | `video_selector` routing to whichever provider is available | Pull per-clip cost from the chosen provider's `estimate_cost`; varies widely between providers | ❌ Not yet proven |
-| **C: Programmatic Animation (Manim)** | Code-driven math/geometry animation. Precise, clean, 3Blue1Brown style. | `math_animate` (ManimCE) | Free (local) | ❌ Not yet proven |
-| **D: Data Visualization (Remotion)** | Animated charts, KPIs, kinetic typography. Data-driven storytelling. | Remotion (built-in components) | Free (local) | ✅ Proven (zero-key formula) |
-| **E: Diagram + Image Stills** | Process flows and architecture diagrams with Ken Burns. | `diagram_gen` + `image_selector` | `diagram_gen` is free; per-image cost from `image_selector`'s routed provider | ✅ Proven |
-| **F: Mixed Mode** | Combine any of the above per-scene. Most flexible. | Multiple tools | Sum per-scene from each tool's `estimate_cost` | Partial |
+| Approach | What It Looks Like | Tools Required | Proven? |
+|---|---|---|---|
+| **A: Data Visualisation (Remotion)** | Animated charts, KPIs, kinetic typography. Data-driven storytelling. | Remotion built-in components | ✅ Proven (zero-key formula) |
+| **B: Kinetic Typography (HyperFrames)** | Text as the subject — words that move, build, and land with the narration. | `hyperframes_compose` | ✅ Proven |
+| **C: Programmatic Animation (Manim)** | Code-driven maths/geometry. Precise, 3Blue1Brown style. | `math_animate` (ManimCE) | ❌ Not yet proven |
+| **D: Diagram-Led** | Process flows and architecture, revealed step by step. | `diagram_gen` + Remotion or HyperFrames | ✅ Proven |
+| **E: Procedural 3D** | Camera moves through a generated world or over terrain. | `threejs_world`, or `blender_world` for reference-grade | ❌ Not yet proven |
+| **F: SVG Character** | A rigged character acting out the idea with mocap clips. | the `character-animation` pipeline | beta |
+| **G: Mixed Mode** | Combine any of the above per scene. Most flexible. | Multiple | Partial |
 
-**Rule:** do NOT fill in a dollar figure in the Cost column from memory. Read every cost live via `estimate_cost()` or `provider_menu_summary()` at proposal time. Provider pricing changes between releases.
+Every approach is free and local. The constraint is **time and craft**, not spend.
+
+**Rule:** do not promise a visual this toolkit cannot build. There is no image or
+video generation — if a concept needs photoreal footage or a generated
+illustration, say so plainly and propose a deterministic treatment instead.
 
 **For each viable approach, present to the user:**
 
@@ -182,30 +187,12 @@ What it looks like: Multiple AI-generated images per scene, crossfaded with
 camera motion (zoom, pan, ken-burns) and particle overlays (fireflies, mist,
 sparkles). Creates the illusion of movement from still frames.
 
-You need: An image generation API key.
-  → You already have: {from provider_menu_summary: available image_generation providers}
-  → Alternative: {from setup_offers: 1-env-var image_generation tools}
-  → Alternative: local Stable Diffusion (see local_diffusion tool install_instructions)
+Everything below runs locally. Report availability from
+`provider_menu_summary()`, and where a tool is missing, name the one-line local
+install that fixes it (for example `pip install manim` for `math_animate`).
 
-Estimated cost for 30s video: pull per-image costs from each provider's
-`estimate_cost` (do NOT hardcode — they drift between releases).
-
-Style options: depend on the picked provider; read from playbook and
-  provider-specific Layer 3 skill (e.g. `.agents/skills/flux-best-practices`).
-
-APPROACH B: Clip-Based Video
-─────────────────────────────
-What it looks like: AI-generated 3-5 second video clips assembled as a story.
-Most cinematic output but hardest to maintain visual consistency across clips.
-
-You need: A video generation API key.
-  → Currently available: {from provider_menu_summary: available video_generation providers}
-  → To enable: {from setup_offers: 1-env-var video_generation tools}, or
-    install a local video model (see video_selector fallback_tools).
-
-Estimated cost for 30s video: pull from each provider's `estimate_cost` on the
-  actual clip plan — per-clip costs range widely between providers and change
-  often. Do NOT hardcode.
+Never offer an API key, a cloud provider, or a paid upgrade as the way to unlock
+an approach — none exists in this project.
 
 Note: This approach is not yet proven in the OpenMontage pipeline.
       Consistency across clips is the #1 challenge.
@@ -396,7 +383,7 @@ COST ESTIMATE
 ├── Image Generation: [provider] × N scenes          $X.XX
 │   (N unique + M reused = total scenes)
 ├── AI Video Clips: [provider] × K clips (if any)   $X.XX
-├── Music: music_gen × 1 track                       $X.XX
+├── Music: music_library or pixabay_music × 1 track      free
 ├── Math Animation: math_animate (local/free)        $0.00
 ├── Diagram Generation: diagram_gen (local/free)     $0.00
 └── TOTAL ESTIMATED                                  $X.XX

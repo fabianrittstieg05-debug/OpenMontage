@@ -94,7 +94,7 @@ comprehensive — the tools provide structure; your vision provides understandin
 
 ### 5-Aspect Structured Output (MANDATORY)
 
-The analyst's report MUST break down the reference video into the **five aspects** from the CMU/Harvard CHAI study (also the canonical structure used in `skills/creative/video-gen-prompting.md`). A narrative-only summary is no longer sufficient — downstream stages (proposal, script, scene-director) ingest the 5-aspect form directly without re-parsing prose.
+The analyst's report MUST break down the reference video into the **five aspects** from the CMU/Harvard CHAI study (also the canonical structure used in `skills/creative/shot-vocabulary.md`). A narrative-only summary is no longer sufficient — downstream stages (proposal, script, scene-director) ingest the 5-aspect form directly without re-parsing prose.
 
 **Decision-tree captioning policy.** For each detected shot, walk all five aspects in order:
 
@@ -106,7 +106,7 @@ The analyst's report MUST break down the reference video into the **five aspects
 >
 > **Mark any aspect explicitly as N/A** if it doesn't apply (e.g., "Subject: N/A — pure scenery shot," or "Scene overlays: N/A — no graphics"). **Silent omission is the most common analyst failure** and produces ambiguous downstream prompts.
 
-See `skills/creative/video-gen-prompting.md` for primitive definitions and the canonical vocabulary used at every aspect.
+See `skills/creative/shot-vocabulary.md` for primitive definitions and the canonical vocabulary used at every aspect.
 
 ### Step 2: Capability Audit
 
@@ -311,14 +311,14 @@ This is NOT optional. The AGENT_GUIDE says: *"Layer 3 is not optional.
 Every generation tool has an agent_skills field. Read them before writing
 prompts."*
 
-Example checklist before generating:
+Example checklist before building:
 ```
-Tool              agent_skills              Read?
-────────────      ────────────────────      ─────
-video_selector    ai-video-gen              [ ]
-flux_image        flux-best-practices       [ ]
-elevenlabs_tts    elevenlabs, text-to-speech [ ]
-video_compose     remotion-best-practices   [ ]
+Tool                  agent_skills                 Read?
+────────────────      ─────────────────────────    ─────
+hyperframes_compose   hyperframes, hyperframes-cli [ ]
+video_compose         remotion-best-practices      [ ]
+diagram_gen           beautiful-mermaid            [ ]
+math_animate          manim-composer               [ ]
 ```
 
 Do NOT proceed to Step 5 until all relevant Layer 3 skills are read.

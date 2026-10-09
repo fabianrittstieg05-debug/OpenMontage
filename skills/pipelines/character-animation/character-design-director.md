@@ -24,7 +24,8 @@ emotions, actions, and style anchors.
 
 ## Tool Use
 
-Use `character_spec_generator` for structured drafts. Use `image_selector` only
+Use `character_spec_generator` for structured drafts. Use a reference image the
+user supplies only
 after the visual style and character sheet requirements are explicit. Before
 using image generation, read the tool's Layer 3 skills from the registry.
 

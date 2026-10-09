@@ -85,7 +85,7 @@ Before rendering, present the user with audio options and get their preferences.
 
 2. **Generate TTS narration:**
    ```python
-   from tools.audio.openai_tts import OpenAITTS
+   from tools.audio.piper_tts import PiperTTS
    result = OpenAITTS().execute({
        'text': narration_script,
        'voice': '<user-chosen or agent-recommended>',
