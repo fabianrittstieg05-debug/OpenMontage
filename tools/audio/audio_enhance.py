@@ -89,7 +89,9 @@ class AudioEnhance(BaseTool):
 
     dependencies = ["cmd:ffmpeg"]
     install_instructions = "Install FFmpeg: https://ffmpeg.org/download.html"
-    agent_skills = ["ffmpeg", "elevenlabs"]
+    # ffmpeg only: this is an ffmpeg filter chain. The former `elevenlabs`
+    # pointer documented a deleted cloud TTS provider, not audio processing.
+    agent_skills = ["ffmpeg"]
 
     capabilities = [
         "noise_reduction",

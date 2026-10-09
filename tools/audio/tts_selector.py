@@ -27,7 +27,9 @@ class TTSSelector(BaseTool):
     provider = "selector"
     stability = ToolStability.BETA
     runtime = ToolRuntime.HYBRID
-    agent_skills = ["text-to-speech", "elevenlabs"]
+    # piper_tts is the only TTS provider; both former pointers documented
+    # deleted cloud providers.
+    agent_skills: list[str] = []
 
     capabilities = [
         "text_to_speech",

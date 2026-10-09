@@ -69,7 +69,9 @@ class MusicLibrary(BaseTool):
         "Override the location with the MUSIC_LIBRARY_DIR environment variable."
     )
 
-    agent_skills = ["music"]
+    # No Layer 3 skill: this reads the user's own files. The former pointer
+    # documented the ElevenLabs Music API.
+    agent_skills: list[str] = []
 
     capabilities = ["list_user_music_tracks"]
     supports = {

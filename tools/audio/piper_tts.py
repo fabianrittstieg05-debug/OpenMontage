@@ -41,7 +41,9 @@ class PiperTTS(BaseTool):
         "Then download a voice model:\n"
         "  piper --download-dir ~/.piper/models --model en_US-lessac-medium"
     )
-    agent_skills = ["text-to-speech"]
+    # No Layer 3 skill: piper is a local ONNX voice with no provider API to
+    # document. Usage guidance lives in skills/core/ and the tool schema.
+    agent_skills: list[str] = []
 
     capabilities = [
         "text_to_speech",

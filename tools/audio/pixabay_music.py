@@ -50,7 +50,9 @@ class PixabayMusic(BaseTool):
         "site's HTML structure may have changed. Use freesound_music as fallback."
     )
 
-    agent_skills = ["music"]
+    # No Layer 3 skill: this scrapes Pixabay. The former pointer documented
+    # the ElevenLabs Music API.
+    agent_skills: list[str] = []
 
     capabilities = ["search_music", "download_music", "stock_music"]
     supports = {
