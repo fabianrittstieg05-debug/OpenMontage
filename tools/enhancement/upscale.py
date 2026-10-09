@@ -287,7 +287,7 @@ class Upscale(BaseTool):
         if model_name == "RealESRGAN_x4plus_anime_6B":
             model_url = f"https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/{model_name}.pth"
 
-        from tools.video._shared import get_torch_device as _get_device
+        from tools.torch_device import get_torch_device as _get_device
         _device = _get_device()
         half = _device == "cuda"  # fp16 only safe on CUDA; MPS/CPU use fp32 for realesrgan
 

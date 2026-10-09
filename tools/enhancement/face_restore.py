@@ -126,7 +126,7 @@ class FaceRestore(BaseTool):
             import inspect
             from gfpgan import GFPGANer
             import torch
-            from tools.video._shared import get_torch_device as _get_device
+            from tools.torch_device import get_torch_device as _get_device
         except ImportError as e:
             return ToolResult(
                 success=False,

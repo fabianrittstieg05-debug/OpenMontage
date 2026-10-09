@@ -2,7 +2,7 @@
 
 **An agentic video production system.**
 
-[Quick Start](#quick-start) · [Try These Prompts](#try-these-prompts) · [Pipelines](#pipelines) · [How It Works](#how-it-works) · [Providers](docs/PROVIDERS.md) · [Agent Guide](AGENT_GUIDE.md)
+[Quick Start](#quick-start) · [Try These Prompts](#try-these-prompts) · [Pipelines](#pipelines) · [How It Works](#how-it-works) · [Tools](docs/TOOLS.md) · [Agent Guide](AGENT_GUIDE.md)
 
 ---
 
@@ -430,7 +430,7 @@ Each tool declares which Layer 3 skills it relies on. The agent reads Layer 1 to
 
 ## Supported Providers
 
-> **Full setup guide with pricing and free tiers:** [`docs/PROVIDERS.md`](docs/PROVIDERS.md)
+> **Every tool, what it does, and whether it needs a local install:** [`docs/TOOLS.md`](docs/TOOLS.md)
 
 <details>
 <summary><strong>Video Generation — 20+ providers</strong></summary>
@@ -640,7 +640,7 @@ Driven through Claude Code via `CLAUDE.md`, which points at `AGENT_GUIDE.md` (op
 
 **A new pipeline:** create a YAML manifest in `pipeline_defs/` plus stage director skills in `skills/pipelines/<your-pipeline>/`, then reference existing tools.
 
-See `docs/ARCHITECTURE.md` for the technical reference, `docs/PROVIDERS.md` for the provider guide (setup, pricing, free tiers), and `AGENT_GUIDE.md` for the agent contract.
+See `docs/ARCHITECTURE.md` for the technical reference, `docs/TOOLS.md` for the tool inventory, and `AGENT_GUIDE.md` for the agent contract.
 
 ---
 

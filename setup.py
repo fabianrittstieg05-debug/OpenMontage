@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="openmontage",
     version="0.1.0",
-    description="AI-Orchestrated Video Production Platform",
+    description="Deterministic, local video production platform",
     packages=find_packages(),
     python_requires=">=3.10",
     install_requires=[
@@ -13,7 +13,5 @@ setup(
         "python-dotenv>=1.0",
         "Pillow>=10.0",
         "requests>=2.31",
-        "google-genai>=1.0.0",
-        "openai>=2.44.0",
     ],
 )
