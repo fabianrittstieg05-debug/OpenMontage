@@ -59,7 +59,7 @@ setup: ensure-venv
 	cd remotion-composer && npm install
 	@echo ""
 	@echo "==> Installing free offline TTS (Piper)..."
-	$(PIP) install piper-tts || echo "  [skip] piper-tts install failed — TTS will use cloud providers instead"
+	$(PIP) install piper-tts || echo "  [skip] piper-tts install failed — narration will be unavailable; piper is the only TTS"
 	@echo ""
 	@echo "==> Installing HyperFrames runtime (cache-warm via npx)..."
 	@echo "    Pulls the 'hyperframes' npm package into the local npx cache so the"
@@ -67,10 +67,17 @@ setup: ensure-venv
 	@npx --yes hyperframes --version >/dev/null 2>&1 && echo "    HyperFrames CLI cached (npx)" || echo "  [skip] HyperFrames cache-warm failed — offline or npm unavailable; first render will fetch on demand"
 	@$(RUN_PYTHON) -c "from tools.video.hyperframes_compose import HyperFramesCompose; HyperFramesCompose._npm_resolve_cache=None; c=HyperFramesCompose()._runtime_check(); print(f'    HyperFrames runtime_available={c[\"runtime_available\"]}, npm={c.get(\"npm_package_version\") or c.get(\"npm_resolve_error\")}'); [print(f'    note: {r}') for r in c['reasons']]" || echo "  [skip] HyperFrames check failed — runtime can be set up later"
 	@echo ""
-	$(RUN_PYTHON) -c "import shutil, os; e=os.path.exists('.env'); shutil.copy('.env.example','.env') if not e else None; print('==> Created .env from .env.example — add your API keys there.' if not e else '==> .env already exists — skipping.')"
+	@echo "==> No .env needed — there are no API keys. See .env.example only if you"
+	@echo "    want to override a local path (projects dir, music library, Blender)."
 	@echo ""
-	@echo "Done! Open this project in your AI coding assistant and start creating."
-	@echo "  Optional: add API keys to .env to unlock cloud providers."
+	@echo "Done! Open this project in Claude Code and type /start."
+	@echo ""
+	@echo "  There is nothing to configure — no API keys, no accounts. Every tool"
+	@echo "  runs locally and renders the same output every time."
+	@echo ""
+	@echo "  For narration, download a voice (one per language, ~60MB):"
+	@echo "    python -m piper.download_voices en_US-lessac-medium"
+	@echo "  For captions:  pip install faster-whisper"
 	@echo "  Optional: run 'make install-gpu' if you have an NVIDIA GPU."
 	@echo "  Optional: run 'make hyperframes-doctor' to fully validate the HyperFrames runtime."
 	@echo "  Optional: run 'make hyperframes-warm' anytime to refresh the npx cache to the latest hyperframes version."
@@ -111,7 +118,7 @@ hyperframes-warm:
 	@echo "==> Cache warm complete."
 
 demo: ensure-venv
-	@echo "==> Rendering zero-key demo videos (no API keys needed)..."
+	@echo "==> Rendering demo videos..."
 	@echo "    These use only Remotion components — animated charts, text, data viz."
 	@echo ""
 	$(RUN_PYTHON) render_demo.py
