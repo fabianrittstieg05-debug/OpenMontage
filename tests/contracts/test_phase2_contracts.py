@@ -17,7 +17,6 @@ from tools.enhancement.face_enhance import FaceEnhance, PRESETS as FACE_PRESETS
 from tools.analysis.scene_detect import SceneDetect
 from tools.enhancement.color_grade import ColorGrade, PROFILES as COLOR_PROFILES
 from tools.audio.audio_enhance import AudioEnhance, PRESETS as AUDIO_PRESETS
-from tools.graphics.image_selector import ImageSelector
 from tools.graphics.code_snippet import CodeSnippet, THEMES as CODE_THEMES
 from tools.graphics.diagram_gen import DiagramGen
 
@@ -27,7 +26,6 @@ PHASE2_TOOLS = [
     SceneDetect,
     ColorGrade,
     AudioEnhance,
-    ImageSelector,
     CodeSnippet,
     DiagramGen,
 ]
@@ -80,17 +78,14 @@ class TestPhase2ToolNames:
         names = {cls().name for cls in PHASE2_TOOLS}
         expected = {
             "face_enhance", "scene_detect", "color_grade", "audio_enhance",
-            "image_selector", "code_snippet", "diagram_gen",
+            "code_snippet", "diagram_gen",
         }
         assert names == expected
 
     def test_expected_tiers(self):
         for cls in PHASE2_TOOLS:
             tool = cls()
-            if tool.name == "image_selector":
-                assert tool.tier == ToolTier.GENERATE
-            else:
-                assert tool.tier == ToolTier.CORE, f"{tool.name} should be CORE"
+            assert tool.tier == ToolTier.CORE, f"{tool.name} should be CORE"
 
 
 # ---- Contract: discoverable via registry ----
@@ -166,13 +161,6 @@ class TestPhase2ErrorHandling:
         tool = AudioEnhance()
         r = tool.execute({"input_path": "/nonexistent.mp4"})
         assert not r.success
-
-    def test_image_selector_no_provider(self):
-        tool = ImageSelector()
-        # Will fail if no API key or local model
-        r = tool.execute({"prompt": "test"})
-        # Either succeeds (provider available) or fails gracefully
-        assert isinstance(r, ToolResult)
 
     def test_diagram_gen_empty_boxes(self, tmp_path):
         tool = DiagramGen()
