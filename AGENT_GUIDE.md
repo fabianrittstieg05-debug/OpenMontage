@@ -38,9 +38,11 @@ When the user's first message is vague, exploratory, or asks what you can do
 
 **Read:** `skills/meta/onboarding.md`
 
-The `/start` command does this for you. It checks the environment, offers the
-few local installs that unlock more tools, and presents starter prompts matched
-to what actually works.
+The `/start` command does this for you, and it bootstraps too: a fresh clone
+cannot even list its own tools, because `tools/cost_tracker.py` imports
+`lib/config_model.py`, which needs `pydantic`. If `registry.discover()` raises
+`ModuleNotFoundError`, the clone is simply not installed yet — offer `make
+setup` rather than reporting a broken repo.
 
 **Skip onboarding** when the user arrives with a specific, actionable request
 ("Make a 60-second explainer about black holes"). Go straight to Rule Zero.

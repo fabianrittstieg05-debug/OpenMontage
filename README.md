@@ -48,18 +48,31 @@ design you can version, review, and rebuild — keep reading.
 ```bash
 git clone https://github.com/calesthio/OpenMontage.git
 cd OpenMontage
-make setup
 ```
 
-Then open the project in Claude Code and type:
+Open the project in Claude Code and type:
 
 ```
 /start
 ```
 
-That checks your environment, offers the few one-line installs that unlock more
-tools, and hands you starter prompts that work on your machine. There is no
-`.env` to fill in.
+That is the whole setup. `/start` checks your environment, installs what's
+missing (asking first), and hands you starter prompts that work on your machine.
+There is no `.env` to fill in and nothing to sign up for.
+
+Prefer to do it yourself? `make setup` does the same install, then `/start` just
+orients you.
+
+> **Why isn't it pre-installed?** Every dependency that matters is compiled per
+> platform — `pydantic_core`, `numpy`, `Pillow` and even `yaml` ship native
+> binaries built for one OS, architecture and Python version, and Remotion's
+> compositor is a per-platform binary. Shipping them would put gigabytes of
+> platform-specific binaries in git history and still break on any combination
+> we didn't anticipate.
+>
+> **Only want the HTML/CSS/GSAP path?** Skip the ~390 MB Remotion install:
+> `make install` does the Python side alone, and HyperFrames fetches itself via
+> `npx` on first use (~20 MB).
 
 Or skip straight to a brief:
 
